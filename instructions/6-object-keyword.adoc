@@ -1,0 +1,49 @@
+= Hands-on: Use ‘object’ Keyword
+:sectanchors:
+
+== Apply Singleton Pattern to Clinic with ‘object’ Keyword
+
+Previously, `Clinic` was defined as a regular class. Refactor it into an `object` to make use of Kotlin's built-in singleton pattern:
+
+[source,kotlin]
+----
+object Clinic {
+    // The rest of the code
+}
+----
+
+By turning `Clinic` into an object, you will ensure that there is only one instance of `Clinic` throughout your application. This centralized data management will make sure that all data operations related to patients, dentists, treatments, and appointments are consistent and error-free.
+
+== Use Companion Object for Factory Methods
+
+In our application, treatments are predefined and can be categorized. To facilitate their creation, use a companion object inside the `Treatment` class:
+
+[source,kotlin]
+----
+companion object {
+    fun teethCleaning() = Treatment(
+        "T001",
+        "Teeth Cleaning",
+        TreatmentType.CLEANING
+    )
+
+    fun cavityFilling() = Treatment(
+        "T002",
+        "Cavity Filling",
+        TreatmentType.FILLING
+    )
+
+    fun rootCanal() = Treatment(
+        "T003",
+        "Root Canal",
+        TreatmentType.ROOT_CANAL
+    )
+}
+----
+
+With these factory methods, you will be able to create standardized treatment instances without manually setting all the details every time. This will ensure consistency in treatment data and also make the code more readable and maintainable.
+
+
+➡️ link:./7-inheritance.adoc[7. Inheritance]
+
+⬅️ link:./5-enum-classes.adoc[5. Enum Classes]
