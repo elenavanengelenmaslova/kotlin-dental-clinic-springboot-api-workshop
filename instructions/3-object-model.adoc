@@ -10,7 +10,7 @@ image::images/957_5_2.svg[clinic]
 
 == Treatment
 
-Start by creating a `model` package inside the `DentalClinic` project in `src/main/kotlin`, e.g. `com.bpbonline.dentalclinic.model`. Inside this package, create a class `Treatment`:![](../../../Desktop/book/Chapter5/oneToMany.png)
+Start by creating a `model` package inside the `DentalClinic` project in `src/main/kotlin`, e.g. `com.bpbonline.dentalclinic.model`. Inside this package, create a class `Treatment`:
 
 [source,kotlin]
 ----

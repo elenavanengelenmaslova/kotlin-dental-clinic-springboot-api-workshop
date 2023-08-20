@@ -15,6 +15,6 @@ data class Treatment(
 ----
 
 
-➡️ link:./5-enums.adoc[5. Enum Classes]
+➡️ link:./5-enum-classes.adoc[5. Enum Classes]
 
 ⬅️ link:./3-object-model.adoc[3. Object Model]
