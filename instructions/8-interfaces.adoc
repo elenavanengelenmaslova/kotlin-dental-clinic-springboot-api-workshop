@@ -1,0 +1,8 @@
+= Add Inheritance
+:sectanchors:
+
+
+
+➡️ link:./9-polymorphism.adoc[9. Polymorphism]
+
+⬅️ link:./7-inheritance.adoc[7. Inheritance]

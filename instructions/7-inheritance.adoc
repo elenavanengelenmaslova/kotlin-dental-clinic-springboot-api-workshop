@@ -1,0 +1,79 @@
+= Add Inheritance
+:sectanchors:
+
+== Create a `Person` Superclass
+
+The `Person` class will serve as the foundation for both `Dentist` and `Patient`. It encompasses `id`, `name` attributes, and an `introduce` method. Using the `open` keyword signals that this class can be inherited.
+
+[source,kotlin]
+----
+open class Person(
+    open val id: String,
+    open val name: String,
+) {
+    open fun introduce() = "Hello, my name is $name."
+}
+----
+
+== Refactor `Dentist` to Inherit from `Person`
+
+Transition `Dentist` into a subclass of `Person`. Adopt the `:` notation and invoke the `Person`’s constructor. Discard the `val` keyword from `id` and `name` since they're inherited and no longer require overriding. Observe the modified `introduce` method tailored for dentists:
+
+[source,kotlin]
+----
+class Dentist(
+    id: String,
+    name: String,
+) : Person(id, name) {
+   // The rest of your Dentist class
+    override fun introduce() = "${super.introduce()} I'm a dentist."
+}
+----
+
+== Update the `Patient` Class in a Similar Fashion
+
+Allow `Patient` to inherit from `Person`. Follow the same guidelines as with `Dentist` and incorporate a patient-centric introduction.
+
+[source,kotlin]
+----
+class Patient(
+    id: String,
+    name: String,
+) : Person(id, name) {
+    // The rest of your Patient class
+    override fun introduce() = "${super.introduce()} I'm a patient."
+}
+----
+
+== Test the Introduce Method
+
+To test the `introduce` method of the `Dentist` class:
+
+. Right-click within `Dentist`.
+. Navigate to `Generate…` | `Test…`.
+. Ensure the `introduce` method is selected and then confirm.
+. This procedure spawns a `DentistTest` in `src/test/kotlin/com.bpbonline.dentalclinic.model`.
+
+Append the subsequent test and initiate it:
+
+[source,kotlin]
+----
+@Test
+fun introduce() {
+    val dentist = Dentist("2", "Jane")
+    val dentistIntro = "Hello, my name is Jane. I'm a dentist."
+    assertEquals(dentistIntro, dentist.introduce())
+}
+----
+
+== Debug the `Patient` class
+
+. Open the `Patient` class and locate the `init` block and the secondary constructor.
+. Place breakpoints at the beginning of both the `init` block and the secondary constructor. Breakpoints can usually be set by clicking on the margin next to the line number.
+. In the project view, right-click on `PatientTest`. From the context menu, select `Debug ‘PatientTest’`. This action will start the debugging session, and the execution will pause when it reaches your breakpoints.
+. When the execution is paused, use the `Step Over` button in the debugger tool window. This allows you to proceed line by line through the code. As you navigate, be observant of the order of execution and the values of variables.
+
+
+➡️ link:./8-interfaces.adoc[8. Interfaces]
+
+⬅️ link:./6-object-keyword.adoc[6. Object Keyword]

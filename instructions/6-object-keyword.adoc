@@ -1,4 +1,4 @@
-= Hands-on: Use ‘object’ Keyword
+= Use `object` Keyword
 :sectanchors:
 
 == Apply Singleton Pattern to Clinic with ‘object’ Keyword
