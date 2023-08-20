@@ -21,3 +21,7 @@ Follow the steps below to set up your Spring Boot Kotlin project using IntelliJ 
 . Click the *Finish* button to generate your project.
 
 NOTE: Wait for the project to be initialized and dependencies to be loaded. Depending on your internet connection, this might take a few minutes.
+
+➡️ link:./3-object-model.adoc[3. Object Model]
+
+⬅️ link:./1-prerequisites.adoc[1. Prerequisites]

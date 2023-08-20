@@ -1,0 +1,39 @@
+= Add Enum
+:sectanchors:
+
+Go ahead and enhance your Spring Boot application by adding a new enum:
+
+[source,kotlin]
+----
+enum class TreatmentType(
+    val displayName: String,
+    val duration: Duration,
+) {
+    CHECK_UP("Check-up", Duration.ofMinutes(30)),
+    CLEANING("Cleaning", Duration.ofMinutes(60)),
+    TOOTH_EXTRACTION("Tooth Extraction", Duration.ofMinutes(90)),
+    FILLING("Filling", Duration.ofMinutes(120)),
+    ROOT_CANAL("Root Canal", Duration.ofMinutes(120));
+}
+----
+
+Then incorporate this enum into the `Treatment` class as follows:
+
+[source,kotlin]
+----
+class Treatment(
+    val id: String, val name: String,
+    val type: TreatmentType,
+) {
+    val duration = type.duration
+    // the rest of the class
+}
+----
+
+This modification enhances the clarity and robustness of your data model by categorizing treatments and explicitly defining their durations. Note that in the updated `Treatment` class, we have removed `duration` from the constructor parameters and instead derive it from the `type` property. This change illustrates how we can associate specific data (in this case, duration) with each constant in an enum class.
+
+
+
+➡️ link:./6-object-keyword.adoc[6. Object Keyword]
+
+⬅️ link:./4-data-classes.adoc[4. Data Classes]

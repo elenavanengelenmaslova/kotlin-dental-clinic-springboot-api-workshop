@@ -1,0 +1,20 @@
+= Add Data Classes
+:sectanchors:
+
+Convert the `Appointment` and `Treatment` classes into data classes. These classes primarily encapsulate data without adding any extra behavior, making them ideal candidates for the data class structure in Kotlin.
+
+[source,kotlin]
+----
+data class Appointment(
+   // the rest of the constructor
+)
+
+data class Treatment(
+   // The rest of the constructor
+)
+----
+
+
+➡️ link:./5-enums.adoc[5. Enum Classes]
+
+⬅️ link:./3-object-model.adoc[3. Object Model]
