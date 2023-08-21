@@ -109,14 +109,19 @@ class AppointmentController(
 
 == Integrate Swagger and run the app
 
-- Update dependencies block in `build.gradle.kts` with:
+- Update the `<dependencies>` section in your `pom.xml` with:
 
-[source,kotlin]
+[source,xml]
 ----
-implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0")
+<dependency>
+    <groupId>org.springdoc</groupId>
+    <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+    <version>2.2.0</version>
+</dependency>
 ----
 
-- Reload Gradle changes, e.g. by pressing the _Load Gradle Changes_ button.
+
+- Reload Maven changes, e.g. by pressing the _Load Maven Changes_ button.
 - Start the `DentalClinicApplication.kt` application.
 - Open http://localhost:8080/swagger-ui.html to view the Swagger UI for your appointments service.
 - Expand the service and then click the _Try it out_ button, as illustrated in Figure 5.3.
