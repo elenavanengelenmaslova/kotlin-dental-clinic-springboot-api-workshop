@@ -1,4 +1,4 @@
-= Add Inheritance
+= Use Interfaces
 :sectanchors:
 
 == Interfaces Creation
