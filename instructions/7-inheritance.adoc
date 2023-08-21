@@ -47,12 +47,12 @@ class Patient(
 
 == Test the Introduce Method
 
-To test the `introduce` method of the `Dentist` class:
+To test the `introduce` method of the `Patient` class:
 
-. Right-click within `Dentist`.
+. Right-click within `Patient`.
 . Navigate to `Generate…` | `Test…`.
 . Ensure the `introduce` method is selected and then confirm.
-. This procedure spawns a `DentistTest` in `src/test/kotlin/com.bpbonline.dentalclinic.model`.
+. This procedure spawns a `PatientTest` in `src/test/kotlin/com.bpbonline.dentalclinic.model`.
 
 Append the subsequent test and initiate it:
 
@@ -60,9 +60,10 @@ Append the subsequent test and initiate it:
 ----
 @Test
 fun introduce() {
-    val dentist = Dentist("2", "Jane")
-    val dentistIntro = "Hello, my name is Jane. I'm a dentist."
-    assertEquals(dentistIntro, dentist.introduce())
+    val patient = Patient("1", "John", "Insurance1")
+    val patientIntro =
+        "Hello, my name is John. I am a patient."
+    assertEquals(patientIntro, patient.introduce())
 }
 ----
 

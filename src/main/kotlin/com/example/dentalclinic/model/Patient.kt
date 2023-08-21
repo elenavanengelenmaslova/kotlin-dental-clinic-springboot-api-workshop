@@ -1,6 +1,9 @@
 package com.example.dentalclinic.model
 
-class Patient(val id: String, val name: String) {
+class Patient(
+    id: String,
+    name: String,
+) : Person(id, name) {
     var insurance: String? = null
     lateinit var dentalRecord: DentalRecord
 
@@ -8,7 +11,11 @@ class Patient(val id: String, val name: String) {
         println("Patient Initialized with id: $id and name: $name")
     }
 
-    constructor(id: String, name: String, insurance: String)
+    constructor(
+        id: String,
+        name: String,
+        insurance: String,
+    )
             : this(id, name) {
         println("Secondary constructor called. Insurance: $insurance")
         this.insurance = insurance
@@ -22,4 +29,7 @@ class Patient(val id: String, val name: String) {
         dentalRecord.addTreatment(treatment)
         // additional code to handle the patient's response or actions
     }
+
+    override fun introduce() =
+        "${super.introduce()} I'm a patient."
 }

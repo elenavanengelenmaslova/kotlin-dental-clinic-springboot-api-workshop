@@ -1,6 +1,9 @@
 package com.example.dentalclinic.model
 
-class Dentist(val id: String, val name: String) {
+class Dentist(
+    id: String,
+    name: String,
+) : Person(id, name) {
     var treatmentCount = 0
         private set
 
@@ -10,4 +13,7 @@ class Dentist(val id: String, val name: String) {
         // additional code to handle the treatment process
         patient.receiveTreatment(treatment)
     }
+
+    override fun introduce() = "${super.introduce()} I'm a dentist."
+
 }

@@ -1,9 +1,29 @@
 package com.example.dentalclinic.model
 
-class Treatment(
-    val id: String, val name: String,
+data class Treatment(
+    val id: String,
+    val name: String,
     val type: TreatmentType,
 ) {
     val duration = type.duration
-    // the rest of the class
+
+    companion object {
+        fun teethCleaning() = Treatment(
+            "T001",
+            "Teeth Cleaning",
+            TreatmentType.CLEANING
+        )
+
+        fun cavityFilling() = Treatment(
+            "T002",
+            "Cavity Filling",
+            TreatmentType.FILLING
+        )
+
+        fun rootCanal() = Treatment(
+            "T003",
+            "Root Canal",
+            TreatmentType.ROOT_CANAL
+        )
+    }
 }
