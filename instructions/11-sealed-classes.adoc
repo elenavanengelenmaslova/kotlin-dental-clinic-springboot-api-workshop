@@ -5,7 +5,7 @@ In this hands-on exercise, you will utilize sealed classes to enhance the respon
 
 == Define sealed classes
 
-Inside `com.example.dentalclinic.service`, create sealed classes that represent responses from the appointment service:
+Inside `com.example.dentalclinic.service`, create a new file `ScheduledResult.kt` that contains  sealed classes which represent responses from the appointment service:
 
 [source,kotlin]
 ----
