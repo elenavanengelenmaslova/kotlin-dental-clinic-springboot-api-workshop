@@ -31,8 +31,8 @@ sealed interface ScheduleResult {
 == Modify Clinic object
 
 * Introduce hygienists: `val hygienists = PersonManager<Hygienist>()`
-* Rename parameter dentist to dentalPractitioner in `scheduleAppointment` function.
-* Introduce an `isAvailable` function that will determine if a DentalPractisioner is available for treatment, for example a simulation which determines availability based on id:
+* Rename parameter `dentist` to `dentalPractitioner` in `scheduleAppointment` function.
+* Introduce an `isAvailable` function that will determine if a `DentalPractisioner` is available for treatment, for example a simulation which determines availability based on id:
 
 [source,kotlin]
 ----

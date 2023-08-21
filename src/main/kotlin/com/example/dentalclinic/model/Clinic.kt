@@ -7,6 +7,7 @@ import java.util.*
 object Clinic {
     val patients = PersonManager<Patient>()
     val dentists = PersonManager<Dentist>()
+    val hygienists = PersonManager<Hygienist>()
     val treatments = mutableMapOf<String, Treatment>()
     val appointments = mutableListOf<Appointment>()
 
