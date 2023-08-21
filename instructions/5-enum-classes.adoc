@@ -21,12 +21,13 @@ Then incorporate this enum into the `Treatment` class as follows:
 
 [source,kotlin]
 ----
-class Treatment(
-    val id: String, val name: String,
+data class Treatment(
+    val id: String,
+    val name: String,
     val type: TreatmentType,
 ) {
     val duration = type.duration
-    // the rest of the class
+   // the rest of the class
 }
 ----
 
