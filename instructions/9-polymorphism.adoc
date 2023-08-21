@@ -122,9 +122,9 @@ class AppointmentController(
 
 
 - Reload Maven changes, e.g. by pressing the _Load Maven Changes_ button.
-- Start the `DentalClinicApplication.kt` application.
+- •	Start the `DentalClinicApplication.kt` application, e.g. by right-clicking `DentalClinicApplication.kt` in *Project* pane and selecting *Run 'DentalClinicApplication'*.
 - Open http://localhost:8080/swagger-ui.html to view the Swagger UI for your appointments service.
-- Expand the service and then click the _Try it out_ button, as illustrated in Figure 5.3.
+- Expand the service and then click the _Try it out_ button, as illustrated in screenshot below.
 
 image::images/957_5_3.png[swagger]
 
