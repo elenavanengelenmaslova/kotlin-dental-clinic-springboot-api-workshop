@@ -5,7 +5,7 @@ In this exercise, you will leverage polymorphism in DentalClinic's appointment s
 
 == API Models and Service Interfaces
 
-- Create a `com.bpbonline.dentalclinic.api.dto` package for Data Transfer Objects.
+- Create a `com.example.dentalclinic.api.dto` package for Data Transfer Objects.
 - Add `AppointmentDTOs.kt` Kotlin file to the package.
 
 [source,kotlin]
@@ -23,7 +23,7 @@ data class AppointmentResponse(
 )
 ----
 
-- Create package `com.bpbonline.dentalclinic.service`.
+- Create package `com.example.dentalclinic.service`.
 - Add `AppointmentScheduler` interface in that package.
 
 [source,kotlin]
@@ -44,7 +44,7 @@ interface AppointmentScheduler {
 
 == Service Implementations
 
-- Create a Spring service `DefaultAppointmentScheduler`, an implementation of `AppointmentScheduler` responsible for scheduling appointments on weekdays, in `com.bpbonline.dentalclinic.service.impl` package.
+- Create a Spring service `DefaultAppointmentScheduler`, an implementation of `AppointmentScheduler` responsible for scheduling appointments on weekdays, in a new package `com.example.dentalclinic.service.impl`. The `@Service` annotation defines it as a Spring-managed component.
 
 [source,kotlin]
 ----
@@ -66,7 +66,7 @@ class WeekendAppointmentScheduler : AppointmentScheduler {
 
 == Implement the Controller
 
-- Create a new package `com.bpbonline.dentalclinic.api.controller`, and within this package create `AppointmentController` class which represents a REST API controller for the appointments.
+- Create a new package `com.example.dentalclinic.api.controller`, and within this package create `AppointmentController` class which represents a REST API controller for the appointments.
 
 [source,kotlin]
 ----
