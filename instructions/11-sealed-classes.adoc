@@ -31,7 +31,7 @@ sealed interface ScheduleResult {
 == Modify Clinic object
 
 * Introduce hygienists: `val hygienists = PersonManager<Hygienist>()`
-* Rename parameter `dentist` to `dentalPractitioner` in `scheduleAppointment` function.
+* Rename parameter `dentistId` to `dentalPractitionerId` in `scheduleAppointment` function. You can use IntelliJ’s *Refactor | Rename…* functionality.
 * Introduce an `isAvailable` function that will determine if a `DentalPractisioner` is available for treatment, for example a simulation which determines availability based on id:
 
 [source,kotlin]
@@ -43,7 +43,7 @@ private fun isAvailable(person: DentalPractitioner): Boolean {
 
 == Modify the AppointmentRequest class
 
-Rename parameter dentist to dentalPractitioner:
+Open `AppontmentDTOs.kt` file and rename parameter `dentistId` to `dentalPractitionerId` in `AppointmentRequest` class:
 
 [source,kotlin]
 ----
@@ -55,7 +55,23 @@ data class AppointmentRequest(
 )
 ----
 
-== Revise the scheduleAppointment function
+== Modify the Appointment class
+
+Update Appointment constructor to accept DentalPractitioner instead of Dentist:
+
+[source,kotlin]
+----
+data class Appointment(
+    val id: String,
+    val patient: Patient,
+    val dentalPractitioner: DentalPractitioner,
+    // the rest of the constructor
+)
+
+----
+
+
+== Revise the scheduleAppointment function in Clinic object
 
 Enhance `scheduleAppointment` function with the `ScheduleResult` sealed interface to provide a schedule outcome.
 

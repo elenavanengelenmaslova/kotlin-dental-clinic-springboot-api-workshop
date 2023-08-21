@@ -4,7 +4,7 @@ import java.time.LocalDateTime
 
 data class AppointmentRequest(
     val patientId: String,
-    val dentistId: String,
+    val dentalPractitionerId: String,
     val date: LocalDateTime,
     val treatmentType: String,
 )

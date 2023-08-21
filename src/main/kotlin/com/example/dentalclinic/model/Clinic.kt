@@ -1,6 +1,7 @@
 package com.example.dentalclinic.model
 
 import com.example.dentalclinic.service.PersonManager
+import com.example.dentalclinic.service.ScheduleResult
 import java.time.LocalDateTime
 import java.util.*
 
@@ -16,25 +17,58 @@ object Clinic {
 
     fun scheduleAppointment(
         patientId: String,
-        dentistId: String,
+        dentalPractitionerId: String,
         time: LocalDateTime,
         treatmentId: String,
-    ) {
-        val patient = patients.getPersonById(patientId)
-            ?: throw IllegalArgumentException("Patient not found")
-        val dentist = dentists.getPersonById(dentistId)
-            ?: throw IllegalArgumentException("Dentist not found")
-        val treatment = treatments[treatmentId]
-            ?: throw IllegalArgumentException("Treatment not found")
-        appointments.add(
-            Appointment(
-                UUID.randomUUID().toString(),
-                patient,
-                dentist,
-                time,
-                treatment,
+    ) : ScheduleResult {
+        val patient =
+            Clinic.patients.getPersonById(patientId)
+                ?: return ScheduleResult.NotFound(
+                    "Patient not found"
+                )
+
+        val treatment = Clinic.treatments[treatmentId]
+            ?: return ScheduleResult.TreatmentUnavailable(
+                Clinic.treatments.values.toList()
             )
-        )
+
+        val dentalPractitioner: DentalPractitioner =
+            findPersonAcrossManagers(
+                dentalPractitionerId,
+                Clinic.dentists,
+                Clinic.hygienists
+            ) ?: return ScheduleResult.NotFound(
+                "Dental practitioner not found"
+            )
+        if (Clinic.isAvailable(dentalPractitioner)) {
+            val appointmentId = UUID.randomUUID().toString()
+            Clinic.appointments.add(
+                Appointment(
+                    appointmentId,
+                    patient,
+                    dentalPractitioner,
+                    time,
+                    treatment,
+                )
+            )
+            return ScheduleResult.Success(appointmentId)
+        } else {
+            val availableDentists =
+                Clinic.dentists.findPersonsByCriteria {
+                    Clinic.isAvailable(it)
+                }
+            val availableHygienists =
+                Clinic.hygienists.findPersonsByCriteria {
+                    Clinic.isAvailable(it)
+                }
+            return ScheduleResult.DentalPractitionerUnavailable(
+                availableDentists + availableHygienists
+            )
+        }
+    }
+
+    private fun isAvailable(person: DentalPractitioner): Boolean {
+        return Character.getNumericValue(person.id.last()) % 2 == 0
     }
 }
 
