@@ -10,7 +10,7 @@ Dive into Kotlin's object-oriented capabilities through a hands-on approach with
 - Harness Kotlin’s blend of both *classic* and *innovative features*.
 - Construct using different class types: _standard_, _data_, and _enum_.
 - Understand the `object` keyword and the principles of _inheritance_.
-- Delve deep into *interfaces*, *polymorphism*, and other advanced aspects.
+- Use *interfaces*, *polymorphism*, and other advanced aspects.
 - Leverage _generics_, _sealed/value classes_ for a robust application design.
 - Refine code through _smart casts_, _restructuring_, and _annotations_.
 
