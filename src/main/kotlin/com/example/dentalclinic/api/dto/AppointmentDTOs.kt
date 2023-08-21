@@ -1,8 +1,10 @@
 package com.example.dentalclinic.api.dto
 
+import com.example.dentalclinic.annotations.ValidPatientId
 import java.time.LocalDateTime
 
 data class AppointmentRequest(
+    @ValidPatientId
     val patientId: String,
     val dentalPractitionerId: String,
     val dateTime: LocalDateTime,

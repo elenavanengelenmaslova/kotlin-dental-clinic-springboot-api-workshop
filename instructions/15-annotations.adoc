@@ -20,8 +20,7 @@ Currently, the `AppointmentRequest` class contains a `patientId` field. To ensur
     <artifactId>spring-boot-starter-validation</artifactId>
 </dependency>
 ----
-* Note: Replace `YOUR_SPRING_BOOT_VERSION` with your Spring Boot version.
-* Save the file and let Maven update its dependencies.
+* Reload Maven changes, e.g. by pressing the _Load Maven Changes_ button.
 
 
 == Define the Custom Annotation:
@@ -60,6 +59,7 @@ class PatientIdValidator :
 ----
 
 * Couple our annotation to a validator class with `@Constraint` annotation:
+
 [source,kotlin]
 ----
 @Constraint(validatedBy = [PatientIdValidator::class])
@@ -76,6 +76,17 @@ data class AppointmentRequest(
     val patientId: String,
     // The rest of the constructor
 )
+----
+
+== Enable validation on POST endpoint
+Open `AppointmentController` class, add a `@Valid` annotation to `appointmentRequest` parameter of the `scheduleAppointment` function:
+
+[source,kotlin]
+----
+@PostMapping
+fun scheduleAppointment(
+    @Valid @RequestBody appointmentRequest: AppointmentRequest,
+) // the rest of the code
 ----
 
 Now, when an `AppointmentRequest` is processed, it will also validate the `patientId` following our custom rule.

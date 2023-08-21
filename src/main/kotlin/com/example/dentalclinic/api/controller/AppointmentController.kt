@@ -7,6 +7,7 @@ import com.example.dentalclinic.service.AppointmentQueryService
 import com.example.dentalclinic.service.AppointmentScheduler
 import com.example.dentalclinic.service.impl.DefaultAppointmentScheduler
 import com.example.dentalclinic.service.impl.WeekendAppointmentScheduler
+import jakarta.validation.Valid
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import java.time.DayOfWeek
@@ -20,7 +21,7 @@ class AppointmentController(
 ) {
     @PostMapping
     fun scheduleAppointment(
-        @RequestBody appointmentRequest: AppointmentRequest,
+        @Valid @RequestBody appointmentRequest: AppointmentRequest,
     ): ResponseEntity<AppointmentResponse> {
         val appointmentScheduler =
             findSchedulerFor(appointmentRequest.dateTime)

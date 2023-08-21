@@ -1,6 +1,8 @@
 = Congratulations on completing this workshop!
 :sectanchors:
 
+Solution can be found https://github.com/elenavanengelenmaslova/kotlin-dental-clinic-springboot-api-workshop/tree/main/src[here].
+
 image::images/perfectSmile.jpeg[perfect!]
 
 ⬅️ link:./15-annotations.adoc[15. Annotations]
