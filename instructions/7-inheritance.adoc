@@ -73,6 +73,7 @@ fun introduce() {
 . Place breakpoints at the beginning of both the `init` block and the secondary constructor. Breakpoints can usually be set by clicking on the margin next to the line number.
 . In the project view, right-click on `PatientTest`. From the context menu, select `Debug ‘PatientTest’`. This action will start the debugging session, and the execution will pause when it reaches your breakpoints.
 . When the execution is paused, use the `Step Over` button in the debugger tool window. This allows you to proceed line by line through the code. As you navigate, be observant of the order of execution and the values of variables.
+. After last breakboint, hit Resume Program button to finish the test execution.
 
 
 ➡️ link:./8-interfaces.adoc[8. Interfaces]

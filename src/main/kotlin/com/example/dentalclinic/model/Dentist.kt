@@ -14,6 +14,6 @@ class Dentist(
         patient.receiveTreatment(treatment)
     }
 
-    override fun introduce() = "${super.introduce()} I'm a dentist."
+    override fun introduce() = "${super.introduce()} I am a dentist."
 
 }

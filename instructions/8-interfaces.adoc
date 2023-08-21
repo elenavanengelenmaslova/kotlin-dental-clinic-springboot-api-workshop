@@ -2,7 +2,7 @@
 :sectanchors:
 
 == Interfaces Creation
-Begin by creating the `DentalPractitioner` and `Employee` interfaces in the *DentalClinic.kt* file.
+Begin by creating the `DentalPractitioner` and `Employee` interfaces in the `com.example.dentalclinic.model` package.
 
 [source,kotlin]
 ----

@@ -15,8 +15,7 @@ class Patient(
         id: String,
         name: String,
         insurance: String,
-    )
-            : this(id, name) {
+    ) : this(id, name) {
         println("Secondary constructor called. Insurance: $insurance")
         this.insurance = insurance
     }
@@ -31,5 +30,5 @@ class Patient(
     }
 
     override fun introduce() =
-        "${super.introduce()} I'm a patient."
+        "${super.introduce()} I am a patient."
 }
