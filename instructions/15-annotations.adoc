@@ -12,12 +12,12 @@ Currently, the `AppointmentRequest` class contains a `patientId` field. To ensur
 
 == Update Dependencies:
 * In your `pom.xml` file, add the following dependency inside the `<dependencies>` section:
+
 [source,xml]
 ----
 <dependency>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-validation</artifactId>
-    <version>YOUR_SPRING_BOOT_VERSION</version>
 </dependency>
 ----
 * Note: Replace `YOUR_SPRING_BOOT_VERSION` with your Spring Boot version.
