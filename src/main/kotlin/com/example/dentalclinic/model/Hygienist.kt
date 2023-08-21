@@ -1,12 +1,15 @@
 package com.example.dentalclinic.model
 
+import java.util.*
+
 class Hygienist(
     id: String,
     name: String,
     override val role: String = "Hygienist",
 ) : Person(id, name), Employee, DentalPractitioner {
-    override fun scheduleLeave(days: Int) {
-        println("Hygienist $name scheduled leave for $days days.")
+
+    override fun scheduleLeave(start: Date, end: Date) {
+        println("Hygienist $name scheduled leave from $start to $end.")
     }
 
     override fun performTreatment(
