@@ -1,0 +1,6 @@
+= Congratulations on completing this workshop!
+:sectanchors:
+
+image::images/perfectSmile.jpeg[perfect!]
+
+⬅️ link:./15-annotations.adoc[15. Annotations]

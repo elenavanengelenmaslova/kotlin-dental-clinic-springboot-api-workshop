@@ -1,0 +1,85 @@
+= Create a Custom Annotation for Validation
+:sectanchors:
+
+In this exercise, you'll improve the DentalClinic’s API by adding a validation layer:
+
+. Apply Kotlin annotations for real-world purposes.
+. Enhance the `AppointmentRequest` class data validation for `patientId`.
+Note: This exercise omits custom error handling for validation exceptions for brevity.
+
+== Requirement:
+Currently, the `AppointmentRequest` class contains a `patientId` field. To ensure that the provided patient ID follows the expected format (i.e., it starts with a `P` followed by numbers), you'll create a custom annotation to validate this format.
+
+== Update Dependencies:
+* In `build.gradle.kts` file update dependencies block with the following dependency:
+[source,kotlin]
+----
+implementation ("org.springframework.boot:spring-boot-starter-validation")
+----
+* Reload Gradle changes.
+
+== Define the Custom Annotation:
+In a new package `com.bpbonline.dentalclinic.annotations` create a new file named `CustomAnnotations.kt`. Inside the file define the custom annotation named `ValidPatientId`.
+
+[source,kotlin]
+----
+@Target(
+    AnnotationTarget.FIELD,
+    AnnotationTarget.PROPERTY_GETTER
+)
+@Retention(AnnotationRetention.RUNTIME)
+annotation class ValidPatientId(
+    val message: String = "Invalid patient id"
+)
+----
+
+== Set Up the Validator:
+* Within the same package, create the validator class named `PatientIdValidator`. This class should implement `ConstraintValidator<ValidPatientId, String>`.
+
+[source,kotlin]
+----
+class PatientIdValidator :
+    ConstraintValidator<ValidPatientId, String> {
+
+    // Regex pattern for string that begins with "P" followed by numbers
+    private val idPattern = "P\\d+".toRegex()
+
+    override fun isValid(
+        value: String?,
+        context: ConstraintValidatorContext?,
+    ): Boolean {
+        return value != null && value.matches(idPattern)
+    }
+}
+----
+
+* Couple our annotation to a validator class with `@Constraint` annotation:
+[source,kotlin]
+----
+@Constraint(validatedBy = [PatientIdValidator::class])
+annotation class ValidPatientId( // ...
+----
+
+== Integrate the Annotation with `AppointmentRequest`:
+Update the `AppointmentRequest` class by marking the `patientId` field with your new `@ValidPatientId` annotation:
+
+[source,kotlin]
+----
+data class AppointmentRequest(
+    @ValidPatientId
+    val patientId: String,
+    // The rest of the constructor
+)
+----
+
+Now, when an `AppointmentRequest` is processed, it will also validate the `patientId` following our custom rule.
+
+== Validation in Action:
+To see your annotation in action, run `DentalClinicApplication.kt`
+again then in Swagger UI try an invalid `patientId` in a request to the DentalClinic API. If configured correctly, an error response 400 will show default message `Invalid patient id` in the list of errors. You may need to scroll done the response body to find the message. For simplicity we have not used any custom error handling for such validation exceptions.
+
+Congratulations on completing this workshop!
+
+➡️ link:./16-congrats.adoc[16. Hooray!]
+
+⬅️ link:./14-destructuring-declarations.adoc[14. Destructuring Declarations  ]

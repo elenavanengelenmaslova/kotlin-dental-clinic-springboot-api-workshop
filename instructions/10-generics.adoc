@@ -1,0 +1,145 @@
+= Using Generics
+
+In this exercise, you are going to use generics to maintain unique IDs for persons within the DentalClinic app.
+
+== Creating the PersonIdRegistry
+
+In the `com.bpbonline.dentalclinic.service` package, create an object named `PersonIdRegistry`. This object will manage the unique person IDs:
+
+[source,kotlin]
+----
+object PersonIdRegistry {
+    private val registeredIDs = mutableSetOf<String>()
+
+    fun registerID(id: String) {
+        if (!registeredIDs.add(id)) {
+            throw IllegalArgumentException("ID already exists: $id")
+        }
+    }
+
+    fun unregisterID(id: String) {
+        registeredIDs.remove(id)
+    }
+}
+----
+
+== Developing the PersonManager
+
+Still within the same package, introduce the `PersonManager` class. This generic class can cater to all Person subtypes:
+
+[source,kotlin]
+----
+class PersonManager<T : Person> {
+    private val persons = mutableMapOf<String, T>()
+
+    fun addPerson(person: T) {
+        PersonIdRegistry.registerID(person.id)
+        persons[person.id] = person
+    }
+
+    fun removePerson(id: String) {
+        persons.remove(id)?.let {
+            PersonIdRegistry.unregisterID(it.id)
+        }
+    }
+
+    fun getPersonById(id: String): T? = persons[id]
+
+    fun findPersonsByCriteria(criteria: (T) -> Boolean): List<T> {
+        return persons.values.filter(criteria)
+    }
+}
+----
+
+== Modifying the Clinic Object
+
+Alter the `Clinic` object to employ `PersonManager` for managing both patients and dentists. Ensure to discard the individual `addPatient` and `addDentist` functions:
+
+[source,kotlin]
+----
+object Clinic {
+    val patients = PersonManager<Patient>()
+    val dentists = PersonManager<Dentist>()
+    // the rest of the variables and functions
+
+    fun scheduleAppointment(
+        patientId: String,
+        dentistId: String,
+        time: LocalDateTime,
+        treatmentId: String,
+    ) {
+        val patient = patients.getPersonById(patientId)
+            ?: throw IllegalArgumentException("Patient not found")
+        val dentist = dentists.getPersonById(dentistId)
+            ?: throw IllegalArgumentException("Dentist not found")
+        // the rest of the function
+    }
+}
+----
+
+== Enabling Search Across Multiple Managers
+
+Place the below function at the end of `Clinic.kt`. It assists in looking up any person by ID across various person managers:
+
+[source,kotlin]
+----
+inline fun <reified T> findPersonAcrossManagers(
+    id: String,
+    vararg managers: PersonManager<*>,
+): T? {
+    for (manager in managers) {
+        val person = manager.getPersonById(id)
+        if (person != null && person is T) {
+            return person
+        }
+    }
+    return null
+}
+----
+
+== Testing the Functionality
+
+Develop a unit test named `FindPersonAcrossManagersTest` to assess the performance of the new function:
+
+[source,kotlin]
+----
+internal class FindPersonAcrossManagersTest {
+    private lateinit var patient1: Patient
+    private lateinit var dentist1: Dentist
+    private lateinit var patientManager: PersonManager<Patient>
+    private lateinit var dentistManager: PersonManager<Dentist>
+
+    @BeforeEach
+    fun setUp() {
+        patientManager = PersonManager<Patient>()
+        dentistManager = PersonManager<Dentist>()
+        patient1 = Patient(id = "p1", name = "John Doe")
+        dentist1 = Dentist(id = "d1", name = "Dr. Smith")
+        patientManager.addPerson(patient1)
+        dentistManager.addPerson(dentist1)
+    }
+
+    @Test
+    fun findPersonAcrossManagers() {
+        val foundPerson: Person? =
+            findPersonAcrossManagers(
+                id = "p1", patientManager, dentistManager
+            )
+        assertNotNull(foundPerson)
+        assertTrue(foundPerson is Patient)
+    }
+
+    @AfterEach
+    fun tearDown() {
+        patientManager.removePerson(patient1.id)
+        dentistManager.removePerson(dentist1.id)
+    }
+}
+----
+
+In this hands-on activity, Kotlin generics were employed to develop type-safe, reusable components. The exercise portrayed how to manage and pinpoint unique entities effectively, underscoring the flexibility and value of generics in software development.
+
+
+➡️ link:./11-sealed-classes.adoc[11. Sealed Classes]
+
+⬅️ link:./9-polymorphism.adoc[9. Polymorphism]

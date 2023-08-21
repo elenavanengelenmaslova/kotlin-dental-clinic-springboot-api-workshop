@@ -1,7 +1,20 @@
 = Object-Oriented Programming in Kotlin and Spring Boot
 
-In this workshop you will learn how to represent real-world entities and relationships through code. Kotlin not only embraces the fundamental principles of object-oriented programming but also enhances them with its concise syntax and unique features. As you progress through the workshop, you will work on the "DentalClinic" application, utilizing classes, data classes, and enum classes. While constructing the application, you will get familiar with the object keyword, apply inheritance, and integrate interfaces and polymorphism. Concepts such as generics, sealed and value classes will be vital in building a robust application. Furthermore, smart casts, restructuring declarations, and annotations will be the tools for refining your code.
-This hands-on approach ensures your understanding extends beyond theory, giving you practical experience with Kotlin’s object-oriented capabilities.
+== Workshop Overview
+
+Dive into Kotlin's object-oriented capabilities through a hands-on approach with the Spring Boot "DentalClinic" application.
+
+*Key Takeaways:*
+- Grasp how to depict *real-world entities* and relationships in code.
+- Harness Kotlin’s blend of both *classic* and *innovative features*.
+- Construct using different class types: _standard_, _data_, and _enum_.
+- Understand the `object` keyword and the principles of _inheritance_.
+- Delve deep into *interfaces*, *polymorphism*, and other advanced aspects.
+- Leverage _generics_, _sealed/value classes_ for a robust application design.
+- Refine code through _smart casts_, _restructuring_, and _annotations_.
+
+At the end of this workshop, you'll have practical experience, moving beyond just theory, to  understand Kotlin's  object-oriented framework.
+
 
 image::instructions/images/dentist.jpeg[dental clinic]
 

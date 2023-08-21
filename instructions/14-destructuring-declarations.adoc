@@ -1,0 +1,104 @@
+= Use Destructuring Declarations
+:sectanchors:
+
+In this hands-on exercise, you will use destructuring declarations while implementing a feature to fetch appointment details via a REST endpoint.
+
+== Add a new DTO
+
+Define `AppointmentDetailDTO` at the end of `AppointmentDTOs.kt`:
+
+[source,kotlin]
+----
+data class AppointmentDetailDTO(
+    val dateTime: LocalDateTime,
+    val patientId: String,
+    val dentalPractitionerId: String,
+    val treatmentType: String,
+    val durationInMinutes: Long,
+)
+----
+
+== Implement fetch method in Clinic object
+
+Add `getAppointmentById` function:
+
+[source,kotlin]
+----
+fun getAppointmentById(id: String): Appointment? {
+    return appointments.find { it.id == id }
+}
+----
+
+== Create a service
+
+Navigate to the package `com.bpbonline.dentalclinic.service` and introduce a new service class `AppointmentQueryService`:
+
+[source,kotlin]
+----
+@Service
+class AppointmentQueryService {
+    fun getAppointmentById(appointmentId: String): AppointmentDetailDTO? {
+        val appointment =
+            Clinic.getAppointmentById(appointmentId)
+                ?: return null
+        // Destructuring declaration extracts specific properties.
+        // The underscore skips and ignores unused properties.
+        val (_, patient, practitioner, time, treatment) = appointment
+        return AppointmentDetailDTO(
+            time,
+            patient.id,
+            practitioner.id,
+            treatment.type.displayName,
+            treatment.type.duration.toMinutes()
+        )
+    }
+}
+----
+
+== Extend AppointmentController to fetch appointments by id
+
+* First, ensure the `AppointmentQueryService` is injected:
+
+[source,kotlin]
+----
+@RestController
+@RequestMapping("/appointments")
+class AppointmentController(
+    val appointmentSchedulers: List<AppointmentScheduler>,
+    val appointmentQueryService: AppointmentQueryService,
+) {
+    // The rest of the class
+}
+----
+
+* Then, append the GET mapping method:
+
+[source,kotlin]
+----
+@GetMapping("/{appointmentId}")
+fun getAppointment(
+    @PathVariable appointmentId: String,
+): ResponseEntity<AppointmentDetailDTO> {
+    val appointmentDetails =
+        appointmentQueryService.getAppointmentById(
+            appointmentId
+        )
+    return if (appointmentDetails != null) {
+        ResponseEntity.ok(appointmentDetails)
+    } else {
+        ResponseEntity.notFound().build()
+    }
+}
+----
+
+== Testing the implementation
+
+* Navigate to the Swagger UI. You should notice the POST and GET endpoints for appointments.
+* Open the POST `/appointments` endpoint. Create a new appointment using valid patient, treatment, and dental practitioner IDs (check DataLoader for valid IDs). Make sure to note down the appointment ID from the response.
+* Open the GET `/appointments/{appointmentId}` endpoint. Input the previously saved appointment ID into the `appointmentId` field and execute. You should observe the details of your recent appointment in the response section.
+
+
+
+➡️ link:./15-annotations.adoc[15. Annotations]
+
+⬅️ link:./13-smart-casts.adoc[13. Smart Casts]

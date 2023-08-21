@@ -1,0 +1,28 @@
+= Using smart cast
+:sectanchors:
+
+In the existing test class `FindPersonAcrossManagersTest` add a new unit test that demonstrates how smart cast is used to access a variable `treatmentCount` specific to the `Dentist` class:
+
+[source,kotlin]
+----
+@Test
+fun findDentistAcrossManagers() {
+    // Try to find the person with a patient id using the function
+    val foundPerson: Person? =
+        findPersonAcrossManagers(
+            id = "d1", patientManager, dentistManager
+        )
+    // Assertions
+    assertNotNull(foundPerson)
+    if (foundPerson is Dentist) {
+        // smart cast from Person? to Dentist
+        assertEquals(0, foundPerson.treatmentCount)
+    }
+}
+----
+
+
+
+➡️ link:./14-destructuring-declarations.adoc[14. Destructuring Declarations  ]
+
+⬅️ link:./12-value-classes.adoc[12. Value Classes]

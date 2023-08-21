@@ -1,0 +1,100 @@
+= Use Value Classes
+:sectanchors:
+
+In this hands-on exercise, you will use value classes to improve the validation and encapsulation of specific data points in our dental clinic model.
+
+== Create value classes
+
+* In `Person.kt`, at the end, define `PersonName` to hold and validate a person’s name:
+
+[source,kotlin]
+----
+@JvmInline
+value class PersonName(val value: String) {
+    init {
+        require(value.isNotBlank()) {
+            "Name cannot be blank"
+        }
+        require(!value.any { it.isDigit() }) {
+            "Name cannot contain numbers"
+        }
+    }
+
+    override fun toString(): String {
+        return value
+    }
+}
+----
+
+By overriding `toString()`, you ensure that string templates like “Hello, my name is $name.” remain intact.
+
+* Define `Email` to encapsulate an email address:
+
+[source,kotlin]
+----
+@JvmInline
+value class Email(val email: String)
+----
+
+Note, for simplicity, we are not adding validation logic to the `Email` value class in this example. In a real-world scenario, you might want to include such checks.
+
+== Use value classes in Person
+
+* Update `Person` to use `PersonName` and add an optional `Email`:
+
+[source,kotlin]
+----
+open class Person(
+    open val id: String,
+    open val name: PersonName,
+    open val email: Email?,
+)
+----
+
+* To avoid breaking changes in subclasses and `Person` constructor calls, add a secondary constructor for `Person`:
+
+[source,kotlin]
+----
+constructor(
+        id: String,
+        rawName: String,
+    ) : this(id, PersonName(rawName), null)
+----
+
+With this, there's no need to modify subclasses or instantiation in tests.
+
+== Test the changes
+
+* In `PersonTest`, add a test for validation and the secondary constructor:
+
+[source,kotlin]
+----
+@Test
+fun personName() {
+    // test a valid name, using secondary constructor
+    val hygienist = Hygienist("4", "Mary")
+    assertEquals("Mary", hygienist.name.value)
+    assertNull(hygienist.email)
+
+    // test invalid names will throw IllegalArgumentException
+    assertThrows<IllegalArgumentException> {
+        Hygienist(
+            "4",
+            ""
+        )
+    }
+    assertThrows<IllegalArgumentException> {
+        Hygienist(
+            "4",
+            "123invalid"
+        )
+    }
+}
+----
+
+Run the test to validate the new logic and the secondary constructor.
+
+
+➡️ link:./13-smart-casts.adoc[13. Smart Casts]
+
+⬅️ link:./11-sealed-classes.adoc[11. Sealed Classes]

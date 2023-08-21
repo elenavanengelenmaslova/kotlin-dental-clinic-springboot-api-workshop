@@ -1,0 +1,195 @@
+= Use Sealed Classes
+:sectanchors:
+
+In this hands-on exercise, you will utilize sealed classes to enhance the responses from your appointment service, making them more informative for its clients.
+
+== Define sealed classes
+
+Inside `com.bpbonline.dentalclinic.api.dto`, create sealed classes that represent responses from the appointment service:
+
+[source,kotlin]
+----
+sealed interface ScheduleResult {
+    data class Success(
+        val appointmentId: String,
+    ) : ScheduleResult
+
+    data class DentalPractitionerUnavailable(
+        val availableDentalPractitioners: List<DentalPractitioner>,
+    ) : ScheduleResult
+
+    data class TreatmentUnavailable(
+        val availableTreatments: List<Treatment>,
+    ) : ScheduleResult
+
+    data class NotFound(val message: String) : ScheduleResult
+
+    object TimeSlotUnavailable : ScheduleResult
+}
+----
+
+== Modify Clinic object
+
+* Introduce hygienists: `val hygienists = PersonManager<Hygienist>()`
+* Rename parameter dentist to dentalPractitioner in `scheduleAppointment` function.
+* Introduce an `isAvailable` function that will determine if a DentalPractisioner is available for treatment, for example a simulation which determines availability based on id:
+
+[source,kotlin]
+----
+private fun isAvailable(person: DentalPractitioner): Boolean {
+    return Character.getNumericValue(person.id.last()) % 2 == 0
+}
+----
+
+== Modify the AppointmentRequest class
+
+Rename parameter dentist to dentalPractitioner:
+
+[source,kotlin]
+----
+data class AppointmentRequest(
+    val patientId: String,
+    val dentalPractitionerId: String,
+    val date: LocalDateTime,
+    val treatmentType: String
+)
+----
+
+== Revise the scheduleAppointment function
+
+Enhance `scheduleAppointment` function with the `ScheduleResult` sealed interface to provide a schedule outcome.
+
+* Add validations for patient and dental practitioner IDs:
+
+[source,kotlin]
+----
+fun scheduleAppointment(
+    // function parameters
+): ScheduleResult {
+    val patient =
+        Clinic.patients.getPersonById(patientId)
+            ?: return ScheduleResult.NotFound(
+                "Patient not found"
+            )
+
+    val treatment = Clinic.treatments[treatmentId]
+        ?: return ScheduleResult.TreatmentUnavailable(
+            Clinic.treatments.values.toList()
+        )
+
+    val dentalPractitioner: DentalPractitioner? =
+        findPersonAcrossManagers(
+            dentalPractitionerId,
+            Clinic.dentists,
+            Clinic.hygienists
+        ) ?: return ScheduleResult.NotFound(
+            "Dental practitioner not found"
+        )
+
+    //The rest of the code
+}
+----
+
+* Embed logic to check the dental practitioner’s availability and subsequently schedule the appointment if they are available. Based on conditions, return appropriate `ScheduleResult`:
+
+[source,kotlin]
+----
+if (Clinic.isAvailable(dentalPractitioner)) {
+    val appointmentId = UUID.randomUUID().toString()
+    Clinic.appointments.add(
+        Appointment(
+            appointmentId,
+            patient,
+            dentalPractitioner,
+            time,
+            treatment,
+        )
+    )
+    return ScheduleResult.Success(appointmentId)
+} else {
+    val availableDentists =
+        Clinic.dentists.findPersonsByCriteria {
+            Clinic.isAvailable(it)
+        }
+    val availableHygienists =
+        Clinic.hygienists.findPersonsByCriteria {
+            Clinic.isAvailable(it)
+        }
+    return ScheduleResult.DentalPractitionerUnavailable(
+        availableDentists + availableHygienists
+    )
+}
+----
+
+== Integrate the scheduleAppointment function
+
+Use `Clinic.scheduleAppointment` in the default implementation of `AppointmentScheduler.schedule` function and handle result:
+
+[source,kotlin]
+----
+val result = Clinic.scheduleAppointment(
+    appointmentRequest.patientId,
+    appointmentRequest.dentalPractitionerId,
+    appointmentRequest.dateTime,
+    appointmentRequest.treatmentId
+)
+
+return when (result) {
+    is ScheduleResult.Success -> AppointmentResponse(
+        id = result.appointmentId,
+        message = successMessage(),
+    )
+    is ScheduleResult.TimeSlotUnavailable -> AppointmentResponse(
+        message = "Time slot unavailable!",
+    )
+    is ScheduleResult.TreatmentUnavailable -> {
+        val ids =
+            result.availableTreatments.map { it.id }
+        val msg =
+            "Treatment unavailable! Available treatments: $ids"
+        AppointmentResponse(message = msg)
+    }
+    is ScheduleResult.DentalPractitionerUnavailable -> {
+        val ids =
+            result.availableDentalPractitioners.map { it.id }
+        val msg =
+            "Practitioner unavailable! Who is available: $ids"
+        AppointmentResponse(message = msg)
+    }
+    is ScheduleResult.NotFound -> throw ResponseStatusException(
+        HttpStatus.NOT_FOUND,
+        result.message,
+    )
+}
+----
+
+== Populate data
+
+Bootstrap your clinic with preliminary data. In Spring, one common way to populate data on startup is using an event listener. Let us do this with the `ContextRefreshedEvent`. This event is fired when the application context is initialized or refreshed. Define a `DataLoader` class in a new package `com.bpbonline.dentalclinic.bootstrap`:
+
+[source,kotlin]
+----
+@Component
+class DataLoader {
+
+    @EventListener(ContextRefreshedEvent::class)
+    fun populateInitialData() {
+        val patient = Patient("P001", "John Doe")
+        Clinic.patients.addPerson(patient)
+        val hygienist = Hygienist("DP001", "Ms. Claire")
+        Clinic.hygienists.addPerson(hygienist)
+        val dentist = Dentist("DP002", "Dr. Smith")
+        Clinic.dentists.addPerson(dentist)
+        Clinic.addTreatment(Treatment.teethCleaning())
+    }
+}
+----
+
+== Execution
+
+Run `DentalClinicApplication.kt`. Use Swagger at http://localhost:8080/swagger-ui.html to experiment with appointments endpoint. For instance, attempt with a non-existent patient to trigger a 404 response code or with a dental practitioner that is unavailable, like `dentalPractitionerId: "DP001"`.
+
+
+➡️ link:./12-value-classes.adoc[12. Value Classes]
+
+⬅️ link:./10-generics.adoc[10. Generics]

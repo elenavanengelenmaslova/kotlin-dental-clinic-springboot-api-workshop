@@ -1,6 +1,148 @@
 = Add Inheritance
 :sectanchors:
 
+== Interfaces Creation
+Begin by creating the `DentalPractitioner` and `Employee` interfaces in the *DentalClinic.kt* file.
+
+[source,kotlin]
+----
+interface DentalPractitioner {
+    fun performTreatment(patient: Patient, treatment: Treatment): String
+}
+
+interface Employee {
+    val role: String
+    fun scheduleLeave(days: Int)
+}
+----
+
+Introduce the `Hygienist` class that extends the `Person` class and implements both the `Employee` and `DentalPractitioner` interfaces.
+
+[source,kotlin]
+----
+class Hygienist(
+    id: String,
+    name: String,
+    override val role: String = "Hygienist",
+) : Person(id, name), Employee, DentalPractitioner {
+    override fun scheduleLeave(days: Int) {
+        println("Hygienist $name scheduled leave for $days days.")
+    }
+
+    override fun performTreatment(
+        patient: Patient,
+        treatment: Treatment,
+    ): String {
+        val message = "Hygienist $name is performing ${treatment.name}"
+        println(message)
+        patient.receiveTreatment(treatment)
+        return message
+    }
+}
+
+----
+
+Further, in the same file, update the `Dentist` class to incorporate the functionalities of the two interfaces.
+
+[source,kotlin]
+----
+class Dentist(
+    // Existing class properties
+    override val role: String = "Dentist",
+) : Person(id, name), Employee, DentalPractitioner {
+
+    var treatmentCount = 0
+        private set
+
+    override fun scheduleLeave(start: Date, end: Date) {
+        println("Dentist $name scheduled leave from $start to $end.")
+    }
+
+    override fun performTreatment(
+        patient: Patient,
+        treatment: Treatment,
+    ): String {
+        val message = "Dentist $name is performing ${treatment.name}"
+        println(message)
+        treatmentCount++
+        // additional code to handle the treatment process
+        patient.receiveTreatment(treatment)
+        return message
+    }
+    // The rest of Dentist class
+}
+
+----
+
+Finally, create a `Receptionist` class that extends the `Person` class and implements the `Employee` interface.
+
+[source,kotlin]
+----
+class Receptionist(
+    id: String,
+    name: String,
+    override val role: String = "Receptionist"
+) : Person(id, name), Employee {
+    override fun scheduleLeave(days: Int) {
+        println("Receptionist $name scheduled leave for $days days.")
+    }
+    // Receptionist specific methods here
+}
+----
+
+== Unit Testing Interfaces
+Verify the proper functioning of the interfaces with a unit test named `PerformTreatmentTest`.
+
+[source,kotlin]
+----
+internal class PerformTreatmentTest {
+    private lateinit var patient: Patient
+    private lateinit var treatment: Treatment
+    private lateinit var dentist: Dentist
+    private lateinit var hygienist: Hygienist
+    private lateinit var dentalPractitioners: List<DentalPractitioner>
+
+    @BeforeEach
+    fun setUp() {
+        patient = Patient("1", "Bob")
+        treatment = Treatment(
+            "123",
+            "Clean teeth",
+            TreatmentType.CLEANING,
+        )
+        dentist = Dentist("2", "Jane")
+        hygienist = Hygienist("3", "John")
+        dentalPractitioners = listOf(dentist, hygienist)
+    }
+
+    @Test
+    fun performTreatment() {
+        dentalPractitioners.forEach {
+            val result = it.performTreatment(patient, treatment)
+            assertTreatmentResult(it, result)
+        }
+    }
+
+    private fun assertTreatmentResult(
+        practitioner: DentalPractitioner,
+        result: String,
+    ) {
+        if (practitioner is Dentist)
+            assertEquals(
+                "Dentist Jane is performing Clean teeth",
+                result
+            )
+        else
+            assertEquals(
+                "Hygienist John is performing Clean teeth",
+                result
+            )
+    }
+}
+
+----
+
+To set up the test, follow the procedure from the previous hands-on session. This test ensures the `performTreatment` function of both the `Dentist` and `Hygienist` classes operates as anticipated.
 
 
 ➡️ link:./9-polymorphism.adoc[9. Polymorphism]
