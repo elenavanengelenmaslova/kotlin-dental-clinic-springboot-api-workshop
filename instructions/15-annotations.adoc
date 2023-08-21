@@ -78,7 +78,6 @@ Now, when an `AppointmentRequest` is processed, it will also validate the `patie
 To see your annotation in action, run `DentalClinicApplication.kt`
 again then in Swagger UI try an invalid `patientId` in a request to the DentalClinic API. If configured correctly, an error response 400 will show default message `Invalid patient id` in the list of errors. You may need to scroll done the response body to find the message. For simplicity we have not used any custom error handling for such validation exceptions.
 
-Congratulations on completing this workshop!
 
 ➡️ link:./16-congrats.adoc[16. Hooray!]
 

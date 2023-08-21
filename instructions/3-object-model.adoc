@@ -3,14 +3,11 @@
 
 To set up the data model for our Dental Clinic application, we'll create several Kotlin classes representing the domain entities like `Treatment`, `DentalRecord`, `Patient`, `Dentist`, `Appointment`, and `Clinic`.
 
-image::images/957_5_1.svg[object-model]
-
-image::images/957_5_2.svg[clinic]
-
+IMPORTANT: Throughout the exercise, remember to import the required libraries and dependencies as needed.
 
 == Treatment
 
-Start by creating a `model` package inside the `DentalClinic` project in `src/main/kotlin`, e.g. `com.bpbonline.dentalclinic.model`. Inside this package, create a class `Treatment`:
+Start by creating a `model` package inside the `DentalClinic` project in `src/main/kotlin`, e.g. `com.example.dentalclinic.model`. Inside this package, create a class `Treatment`:
 
 [source,kotlin]
 ----
@@ -139,6 +136,11 @@ class Clinic {
 ----
 
 With these classes, you can now model different scenarios in your Dental Clinic application.
+
+== Draw a class diagram
+Draw a class diagram of the classes you have created and their relationships.
+
+Solution can be found here: link:./3-object-model-class-diagram.adoc[Class diagrams]
 
 ➡️ link:./4-data-classes.adoc[4. Data Classes]
 
