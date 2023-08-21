@@ -5,6 +5,7 @@
 Dive into Kotlin's object-oriented capabilities through a hands-on approach with the Spring Boot "DentalClinic" application.
 
 *Key Takeaways:*
+
 - Grasp how to depict *real-world entities* and relationships in code.
 - Harness Kotlin’s blend of both *classic* and *innovative features*.
 - Construct using different class types: _standard_, _data_, and _enum_.
