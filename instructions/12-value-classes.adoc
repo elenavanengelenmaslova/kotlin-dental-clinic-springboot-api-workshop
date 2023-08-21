@@ -5,7 +5,7 @@ In this hands-on exercise, you will use value classes to improve the validation 
 
 == Create value classes
 
-* In `Person.kt`, at the end, define `PersonName` to hold and validate a person’s name:
+* In `Person` file, at the end, define `PersonName` to hold and validate a person’s name:
 
 [source,kotlin]
 ----
@@ -65,7 +65,7 @@ With this, there's no need to modify subclasses or instantiation in tests.
 
 == Test the changes
 
-* In `PersonTest`, add a test for validation and the secondary constructor:
+* Create a `PersonTest` unit test, add a test for validation:
 
 [source,kotlin]
 ----

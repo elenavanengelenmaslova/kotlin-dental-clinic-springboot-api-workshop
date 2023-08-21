@@ -13,8 +13,8 @@ In this exercise, you will leverage polymorphism in DentalClinic's appointment s
 data class AppointmentRequest(
     val patientId: String,
     val dentistId: String,
-    val date: LocalDateTime,
-    val treatmentType: String,
+    val dateTime: LocalDateTime,
+    val treatmentId: String,
 )
 
 data class AppointmentResponse(
@@ -80,7 +80,7 @@ class AppointmentController(
         @RequestBody appointmentRequest: AppointmentRequest,
     ): ResponseEntity<AppointmentResponse> {
         val appointmentScheduler =
-            findSchedulerFor(appointmentRequest.date)
+            findSchedulerFor(appointmentRequest.dateTime)
         return ResponseEntity.ok(
             appointmentScheduler.schedule(
                 appointmentRequest

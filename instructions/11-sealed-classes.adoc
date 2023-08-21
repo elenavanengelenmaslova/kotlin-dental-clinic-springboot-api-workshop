@@ -83,21 +83,21 @@ fun scheduleAppointment(
     // function parameters
 ): ScheduleResult {
     val patient =
-        Clinic.patients.getPersonById(patientId)
+        patients.getPersonById(patientId)
             ?: return ScheduleResult.NotFound(
                 "Patient not found"
             )
 
-    val treatment = Clinic.treatments[treatmentId]
+    val treatment = treatments[treatmentId]
         ?: return ScheduleResult.TreatmentUnavailable(
-            Clinic.treatments.values.toList()
+            treatments.values.toList()
         )
 
     val dentalPractitioner: DentalPractitioner? =
         findPersonAcrossManagers(
             dentalPractitionerId,
-            Clinic.dentists,
-            Clinic.hygienists
+            dentists,
+            hygienists
         ) ?: return ScheduleResult.NotFound(
             "Dental practitioner not found"
         )
@@ -110,9 +110,9 @@ fun scheduleAppointment(
 
 [source,kotlin]
 ----
-if (Clinic.isAvailable(dentalPractitioner)) {
+if (isAvailable(dentalPractitioner)) {
     val appointmentId = UUID.randomUUID().toString()
-    Clinic.appointments.add(
+    appointments.add(
         Appointment(
             appointmentId,
             patient,
@@ -124,12 +124,12 @@ if (Clinic.isAvailable(dentalPractitioner)) {
     return ScheduleResult.Success(appointmentId)
 } else {
     val availableDentists =
-        Clinic.dentists.findPersonsByCriteria {
-            Clinic.isAvailable(it)
+        dentists.findPersonsByCriteria {
+            isAvailable(it)
         }
     val availableHygienists =
-        Clinic.hygienists.findPersonsByCriteria {
-            Clinic.isAvailable(it)
+        hygienists.findPersonsByCriteria {
+            isAvailable(it)
         }
     return ScheduleResult.DentalPractitionerUnavailable(
         availableDentists + availableHygienists
@@ -181,7 +181,7 @@ return when (result) {
 
 == Populate data
 
-Bootstrap your clinic with preliminary data. In Spring, one common way to populate data on startup is using an event listener. Let us do this with the `ContextRefreshedEvent`. This event is fired when the application context is initialized or refreshed. Define a `DataLoader` class in a new package `com.bpbonline.dentalclinic.bootstrap`:
+Bootstrap your clinic with preliminary data. In Spring, one common way to populate data on startup is using an event listener. Let us do this with the `ContextRefreshedEvent`. This event is fired when the application context is initialized or refreshed. Define a `DataLoader` class in a new package `com.example.dentalclinic.bootstrap`:
 
 [source,kotlin]
 ----
@@ -204,6 +204,16 @@ class DataLoader {
 == Execution
 
 Run `DentalClinicApplication.kt`. Use Swagger at http://localhost:8080/swagger-ui.html to experiment with appointments endpoint. For instance, attempt with a non-existent patient to trigger a 404 response code or with a dental practitioner that is unavailable, like `dentalPractitionerId: "DP001"`.
+
+[source,json]
+----
+{
+  "patientId": "P001",
+  "dentalPractitionerId": "DP001",
+  "dateTime": "2023-08-21T09:32:23.803Z",
+  "treatmentId": "T001"
+}
+----
 
 
 ➡️ link:./12-value-classes.adoc[12. Value Classes]

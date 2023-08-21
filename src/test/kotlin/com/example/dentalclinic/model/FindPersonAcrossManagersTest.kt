@@ -2,8 +2,7 @@ package com.example.dentalclinic.model
 
 import com.example.dentalclinic.service.PersonManager
 import org.junit.jupiter.api.AfterEach
-import org.junit.jupiter.api.Assertions.assertNotNull
-import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
@@ -31,6 +30,21 @@ internal class FindPersonAcrossManagersTest {
             )
         assertNotNull(foundPerson)
         assertTrue(foundPerson is Patient)
+    }
+
+    @Test
+    fun findDentistAcrossManagers() {
+        // Try to find the person with a patient id using the function
+        val foundPerson: Person? =
+            findPersonAcrossManagers(
+                id = "d1", patientManager, dentistManager
+            )
+        // Assertions
+        assertNotNull(foundPerson)
+        if (foundPerson is Dentist) {
+            // smart cast from Person? to Dentist
+            assertEquals(0, foundPerson.treatmentCount)
+        }
     }
 
     @AfterEach

@@ -94,7 +94,19 @@ fun getAppointment(
 == Testing the implementation
 
 * Navigate to the Swagger UI. You should notice the POST and GET endpoints for appointments.
-* Open the POST `/appointments` endpoint. Create a new appointment using valid patient, treatment, and dental practitioner IDs (check DataLoader for valid IDs). Make sure to note down the appointment ID from the response.
+* Open the POST `/appointments` endpoint. Create a new appointment using valid patient, treatment, and dental practitioner IDs (check DataLoader for valid IDs). E.g.
+
+[source,json]
+----
+{
+  "patientId": "P001",
+  "dentalPractitionerId": "DP002",
+  "dateTime": "2023-08-21T09:49:55.691Z",
+  "treatmentId": "T001"
+}
+----
+* Make sure to note down the appointment ID from the response.
+
 * Open the GET `/appointments/{appointmentId}` endpoint. Input the previously saved appointment ID into the `appointmentId` field and execute. You should observe the details of your recent appointment in the response section.
 
 

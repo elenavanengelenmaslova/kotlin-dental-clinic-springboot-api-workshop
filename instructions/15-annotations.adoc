@@ -11,12 +11,18 @@ Note: This exercise omits custom error handling for validation exceptions for br
 Currently, the `AppointmentRequest` class contains a `patientId` field. To ensure that the provided patient ID follows the expected format (i.e., it starts with a `P` followed by numbers), you'll create a custom annotation to validate this format.
 
 == Update Dependencies:
-* In `build.gradle.kts` file update dependencies block with the following dependency:
-[source,kotlin]
+* In your `pom.xml` file, add the following dependency inside the `<dependencies>` section:
+[source,xml]
 ----
-implementation ("org.springframework.boot:spring-boot-starter-validation")
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-validation</artifactId>
+    <version>YOUR_SPRING_BOOT_VERSION</version>
+</dependency>
 ----
-* Reload Gradle changes.
+* Note: Replace `YOUR_SPRING_BOOT_VERSION` with your Spring Boot version.
+* Save the file and let Maven update its dependencies.
+
 
 == Define the Custom Annotation:
 In a new package `com.bpbonline.dentalclinic.annotations` create a new file named `CustomAnnotations.kt`. Inside the file define the custom annotation named `ValidPatientId`.

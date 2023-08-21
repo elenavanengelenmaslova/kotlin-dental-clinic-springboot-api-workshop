@@ -20,29 +20,30 @@ object Clinic {
         dentalPractitionerId: String,
         time: LocalDateTime,
         treatmentId: String,
-    ) : ScheduleResult {
+    ): ScheduleResult {
         val patient =
-            Clinic.patients.getPersonById(patientId)
+            patients.getPersonById(patientId)
                 ?: return ScheduleResult.NotFound(
                     "Patient not found"
                 )
 
-        val treatment = Clinic.treatments[treatmentId]
+        val treatment = treatments[treatmentId]
             ?: return ScheduleResult.TreatmentUnavailable(
-                Clinic.treatments.values.toList()
+                treatments.values.toList()
             )
 
         val dentalPractitioner: DentalPractitioner =
             findPersonAcrossManagers(
                 dentalPractitionerId,
-                Clinic.dentists,
-                Clinic.hygienists
+                dentists,
+                hygienists
             ) ?: return ScheduleResult.NotFound(
                 "Dental practitioner not found"
             )
-        if (Clinic.isAvailable(dentalPractitioner)) {
-            val appointmentId = UUID.randomUUID().toString()
-            Clinic.appointments.add(
+        if (isAvailable(dentalPractitioner)) {
+            val appointmentId =
+                UUID.randomUUID().toString()
+            appointments.add(
                 Appointment(
                     appointmentId,
                     patient,
@@ -54,12 +55,12 @@ object Clinic {
             return ScheduleResult.Success(appointmentId)
         } else {
             val availableDentists =
-                Clinic.dentists.findPersonsByCriteria {
-                    Clinic.isAvailable(it)
+                dentists.findPersonsByCriteria {
+                    isAvailable(it)
                 }
             val availableHygienists =
-                Clinic.hygienists.findPersonsByCriteria {
-                    Clinic.isAvailable(it)
+                hygienists.findPersonsByCriteria {
+                    isAvailable(it)
                 }
             return ScheduleResult.DentalPractitionerUnavailable(
                 availableDentists + availableHygienists
@@ -69,6 +70,10 @@ object Clinic {
 
     private fun isAvailable(person: DentalPractitioner): Boolean {
         return Character.getNumericValue(person.id.last()) % 2 == 0
+    }
+
+    fun getAppointmentById(id: String): Appointment? {
+        return appointments.find { it.id == id }
     }
 }
 
