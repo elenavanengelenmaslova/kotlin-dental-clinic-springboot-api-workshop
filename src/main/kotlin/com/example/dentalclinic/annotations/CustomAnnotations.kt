@@ -1,6 +1,8 @@
 package com.example.dentalclinic.annotations
 
 import jakarta.validation.Constraint
+import jakarta.validation.Payload
+import kotlin.reflect.KClass
 
 @Target(
     AnnotationTarget.FIELD,
@@ -9,5 +11,7 @@ import jakarta.validation.Constraint
 @Retention(AnnotationRetention.RUNTIME)
 @Constraint(validatedBy = [PatientIdValidator::class])
 annotation class ValidPatientId(
-    val message: String = "Invalid patient id"
+    val message: String = "Invalid patient id",
+    val groups: Array<KClass<*>> = [],
+    val payload: Array<KClass<out Payload>> = [],
 )

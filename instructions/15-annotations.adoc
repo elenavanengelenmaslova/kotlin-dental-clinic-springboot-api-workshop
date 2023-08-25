@@ -34,7 +34,9 @@ In a new package `com.bpbonline.dentalclinic.annotations` create a new file name
 )
 @Retention(AnnotationRetention.RUNTIME)
 annotation class ValidPatientId(
-    val message: String = "Invalid patient id"
+    val message: String = "Invalid patient id",
+    val groups: Array<KClass<*>> = [],
+    val payload: Array<KClass<out Payload>> = [],
 )
 ----
 
