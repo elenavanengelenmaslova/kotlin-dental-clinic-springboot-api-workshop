@@ -3,7 +3,7 @@
 
 == Setting up a Spring Boot Kotlin Project
 
-Follow the steps below to set up your Spring Boot Kotlin project using IntelliJ IDEA:
+*For IntelliJ Ultimate*. Follow the steps below to set up your Spring Boot Kotlin project using IntelliJ IDEA:
 
 . Open IntelliJ IDEA and navigate to *File* | *New* | *Project*.
 . Under *Generators*, select *Spring Initializr*.
@@ -19,6 +19,27 @@ Follow the steps below to set up your Spring Boot Kotlin project using IntelliJ 
 .. Under *Developer Tools*, choose *Spring Boot DevTools*.
 .. Under *Web*, select *Spring Web*.
 . Click the *Finish* button to generate your project.
+
+*For IntelliJ Community Ediition*. Follow the steps below to set up your Spring Boot Kotlin project using IntelliJ IDEA:
+
+. Go to https://start.spring.io/
+. Select the following settings:
+.. Language: *Kotlin*
+.. JDK: *17*
+.. Build system: *Maven*
+. Provide your project details:
+.. Name: `DentalClinic`
+.. Package name: `com.bpbonline.dentalclinic`
+. In the dependencies selection select:
+.. Under *Developer Tools*, choose *Spring Boot DevTools*.
+.. Under *Web*, select *Spring Web*.
+. Click the *Generate* button to generate your project zip.
+. Import project into IntelliJ:
+.. Unpack the zip in your IntelliJ project folder, usually called *IdeaProjects*
+.. Go to *File | New | Project from Existing Sources...*
+.. Find the unzipped project and *Open* it
+.. In the *Import Project* popup choose *Import project from existing model | Maven* and click *Create*
+
 
 NOTE: Wait for the project to be initialized and dependencies to be loaded. Depending on your internet connection, this might take a few minutes.
 

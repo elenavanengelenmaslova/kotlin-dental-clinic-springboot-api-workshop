@@ -7,12 +7,14 @@ IMPORTANT: Throughout the exercise, remember to import the required libraries an
 
 == Treatment
 
-Start by creating a `model` package inside the `DentalClinic` project in `src/main/kotlin`, e.g. `com.example.dentalclinic.model`. Inside this package, create a class `Treatment`:
+Start by creating a `com.example.dentalclinic.model` package inside the `DentalClinic` project in `src/main/kotlin`, e.g. by right-clicking on `com.example.dentalclinic` and creating new `model` package. Inside this package (right-click on this package), create a class `Treatment`:
 
 [source,kotlin]
 ----
 class Treatment(val id: String, val name: String, val duration: Int)
 ----
+
+NOTE: We are using `java.time.Duration` throughout the project
 
 == DentalRecord
 
