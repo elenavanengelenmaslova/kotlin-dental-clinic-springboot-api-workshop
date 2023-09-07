@@ -13,7 +13,7 @@
 .. Build system: *Maven*
 . Provide your project details:
 .. Name: `DentalClinic`
-.. Package name: `com.bpbonline.dentalclinic`
+.. Package name: `com.example.dentalclinic`
 . Click *Next*.
 . On the dependencies selection screen:
 .. Under *Developer Tools*, choose *Spring Boot DevTools*.
