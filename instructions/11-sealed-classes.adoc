@@ -75,7 +75,7 @@ data class Appointment(
 
 Enhance `scheduleAppointment` function with the `ScheduleResult` sealed interface to provide a schedule outcome.
 
-* Add validations for patient and dental practitioner IDs:
+* Replace validations for patient, treatment and dentist ids with validation that use the new sealed classes:
 
 [source,kotlin]
 ----
@@ -93,7 +93,7 @@ fun scheduleAppointment(
             treatments.values.toList()
         )
 
-    val dentalPractitioner: DentalPractitioner? =
+    val dentalPractitioner: DentalPractitioner =
         findPersonAcrossManagers(
             dentalPractitionerId,
             dentists,
@@ -139,7 +139,7 @@ if (isAvailable(dentalPractitioner)) {
 
 == Integrate the scheduleAppointment function
 
-Use `Clinic.scheduleAppointment` in the default implementation of `AppointmentScheduler.schedule` function and handle result:
+Use `Clinic.scheduleAppointment` in the implementation of `AppointmentScheduler.schedule` function and handle result. Replace the current implementation of AppointmentScheduler.schedule with:
 
 [source,kotlin]
 ----

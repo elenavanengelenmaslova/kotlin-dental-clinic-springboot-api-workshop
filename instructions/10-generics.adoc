@@ -120,13 +120,13 @@ internal class FindPersonAcrossManagersTest {
     }
 
     @Test
-    fun findPersonAcrossManagers() {
-        val foundPerson: Person? =
+    fun findPatientAcrossManagers() {
+        val foundPerson: Patient? =
             findPersonAcrossManagers(
                 id = "p1", patientManager, dentistManager
             )
         assertNotNull(foundPerson)
-        assertTrue(foundPerson is Patient)
+        assertEquals(patient1, foundPerson)
     }
 
     @AfterEach
