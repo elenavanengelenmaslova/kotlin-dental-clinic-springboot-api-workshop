@@ -4,7 +4,7 @@ In this exercise, you are going to use generics to maintain unique IDs for perso
 
 == Creating the PersonIdRegistry
 
-In the `com.bpbonline.dentalclinic.service` package, create an object named `PersonIdRegistry`. This object will manage the unique person IDs:
+In the `com.example.dentalclinic.service` package, create an object named `PersonIdRegistry`. This object will manage the unique person IDs:
 
 [source,kotlin]
 ----
