@@ -184,7 +184,7 @@ return when (result) {
 
 
 == Update Controller to return error response code
-Lets return HTTP status code 422 when appointment could not be made. Update `AppointmentController.scheduleAppointment` function to return OK only when appointment is made, and `HttpStatus.UNPROCESSABLE_ENTITY` response code when appointment could not be made:
+Let's return HTTP status code 422 when appointment could not be made. Update `AppointmentController.scheduleAppointment` function to return OK only when appointment is made, and `HttpStatus.UNPROCESSABLE_ENTITY` response code when appointment could not be made:
 
 [source,kotlin]
 ----
