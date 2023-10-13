@@ -5,9 +5,11 @@ import com.example.dentalclinic.api.dto.AppointmentRequest
 import com.example.dentalclinic.api.dto.AppointmentResponse
 import com.example.dentalclinic.service.AppointmentQueryService
 import com.example.dentalclinic.service.AppointmentScheduler
+import com.example.dentalclinic.service.ScheduleResult
 import com.example.dentalclinic.service.impl.DefaultAppointmentScheduler
 import com.example.dentalclinic.service.impl.WeekendAppointmentScheduler
 import jakarta.validation.Valid
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import java.time.DayOfWeek
@@ -25,12 +27,18 @@ class AppointmentController(
     ): ResponseEntity<AppointmentResponse> {
         val appointmentScheduler =
             findSchedulerFor(appointmentRequest.dateTime)
-        return ResponseEntity.ok(
+        val appointmentResult =
             appointmentScheduler.schedule(
                 appointmentRequest
             )
-        )
+        return if (appointmentResult.id != null)
+            ResponseEntity.ok(
+                appointmentResult
+            )
+        else ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY)
+            .body(appointmentResult)
     }
+
 
     @GetMapping("/{appointmentId}")
     fun getAppointment(
@@ -47,7 +55,8 @@ class AppointmentController(
         }
     }
 
-    private fun findSchedulerFor( // Determine the correct scheduler
+    private fun findSchedulerFor(
+        // Determine the correct scheduler
         date: LocalDateTime,
     ): AppointmentScheduler {
         val weekend =

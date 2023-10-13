@@ -75,7 +75,7 @@ data class Appointment(
 
 Enhance `scheduleAppointment` function with the `ScheduleResult` sealed interface to provide a schedule outcome.
 
-* Replace validations for patient, treatment and dentist ids with validation that use the new sealed classes:
+* Replace validations for patient, treatment and dentist ids with validation that uses the new sealed classes:
 
 [source,kotlin]
 ----
@@ -155,9 +155,11 @@ return when (result) {
         id = result.appointmentId,
         message = successMessage(),
     )
+
     is ScheduleResult.TimeSlotUnavailable -> AppointmentResponse(
         message = "Time slot unavailable!",
     )
+
     is ScheduleResult.TreatmentUnavailable -> {
         val ids =
             result.availableTreatments.map { it.id }
@@ -165,6 +167,7 @@ return when (result) {
             "Treatment unavailable! Available treatments: $ids"
         AppointmentResponse(message = msg)
     }
+
     is ScheduleResult.DentalPractitionerUnavailable -> {
         val ids =
             result.availableDentalPractitioners.map { it.id }
@@ -172,11 +175,26 @@ return when (result) {
             "Practitioner unavailable! Who is available: $ids"
         AppointmentResponse(message = msg)
     }
-    is ScheduleResult.NotFound -> throw ResponseStatusException(
-        HttpStatus.NOT_FOUND,
-        result.message,
+
+    is ScheduleResult.NotFound -> AppointmentResponse(
+        message = result.message,
     )
 }
+----
+
+
+== Update Controller to return error response code
+Lets return HTTP status code 422 when appointment could not be made. Update `AppointmentController.scheduleAppointment` function to return OK only when appointment is made, and `HttpStatus.UNPROCESSABLE_ENTITY` response code when appointment could not be made:
+
+[source,kotlin]
+----
+ return if (appointmentResult.id != null)
+            ResponseEntity.ok(
+                appointmentResult
+            )
+        else ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY)
+            .body(appointmentResult)
+
 ----
 
 == Populate data
@@ -203,7 +221,19 @@ class DataLoader {
 
 == Execution
 
-Run `DentalClinicApplication.kt`. Use Swagger at http://localhost:8080/swagger-ui.html to experiment with appointments endpoint. For instance, attempt with a non-existent patient to trigger a 404 response code or with a dental practitioner that is unavailable, like `dentalPractitionerId: "DP001"`.
+Run `DentalClinicApplication.kt`. Use Swagger at http://localhost:8080/swagger-ui.html to experiment with appointments endpoint. E.g. successful request:
+
+[source,json]
+----
+{
+  "patientId": "P001",
+  "dentalPractitionerId": "DP002",
+  "dateTime": "2023-08-21T09:32:23.803Z",
+  "treatmentId": "T001"
+}
+----
+
+Attempt with a non-existent patient or practitioner to trigger a 422 response co,de or with an existing dental practitioner that is currently unavailable for appointment, like `dentalPractitionerId: "DP001"`to get a list of available dental practitioners:
 
 [source,json]
 ----
