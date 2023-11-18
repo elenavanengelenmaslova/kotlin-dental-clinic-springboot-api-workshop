@@ -188,12 +188,12 @@ Let's return HTTP status code 422 when appointment could not be made. Update `Ap
 
 [source,kotlin]
 ----
- return if (appointmentResult.id != null)
-            ResponseEntity.ok(
-                appointmentResult
-            )
-        else ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY)
-            .body(appointmentResult)
+  val appointmentScheduler = findSchedulerFor(appointmentRequest.dateTime)
+  val appointmentResult = appointmentScheduler.schedule(appointmentRequest)
+  return if (appointmentResult.id != null)
+      ResponseEntity.ok(appointmentResult)
+  else ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY)
+      .body(appointmentResult)
 
 ----
 
