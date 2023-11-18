@@ -233,7 +233,7 @@ Run `DentalClinicApplication.kt`. Use Swagger at http://localhost:8080/swagger-u
 }
 ----
 
-Attempt with a non-existent patient or practitioner to trigger a 422 response co,de or with an existing dental practitioner that is currently unavailable for appointment, like `dentalPractitionerId: "DP001"`to get a list of available dental practitioners:
+Attempt with a non-existent patient or practitioner to trigger a 422 response code or with an existing dental practitioner that is currently unavailable for appointment, like `dentalPractitionerId: "DP001"`to get a list of available dental practitioners:
 
 [source,json]
 ----
